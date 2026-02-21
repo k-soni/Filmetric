@@ -71,3 +71,13 @@ export default defineConfig([
   },
 ])
 ```
+
+Feature:
+ - Get Movies
+ - Set Movies
+ - Pagination
+ - Filtering
+ - Searching
+ - Sorting
+ - Local storage
+ - Favourites
