@@ -12,15 +12,17 @@ function Movies() {
 
   //get and set movies
   useEffect(() => {
-    console.log("use effect called");
     axios
       .get(`${BASE_URL}${endPoints["trending-movies"]}&api_key=${API_KEY}&page=${pageNum}`)
       .then((res) => {
-        console.log(res.data.results);
-          console.log("setMovies calling");
           setMovies(res.data.results);
       });
   },[pageNum]);
+
+  useEffect(() => {
+    const watchListFromStorage = JSON.parse(localStorage.getItem("watchlist"));
+    setWatchlist(watchListFromStorage);
+  }, []);
 
   function handleNext() {
     console.log("handleNext setPageNum");
@@ -39,11 +41,13 @@ function Movies() {
     console.log("handleWatchListAction called");
     const allMovies = [...watchlist, movie];
     setWatchlist(allMovies);
+    localStorage.setItem('watchlist', JSON.stringify(allMovies));
   }
 
   function removeFromWatchList(movie) {
     const filteredMovies = watchlist.filter(m => m.id !== movie.id);
     setWatchlist([...filteredMovies]);
+    localStorage.setItem('watchlist', JSON.stringify(filteredMovies));
   } 
 
   return (
