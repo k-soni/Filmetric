@@ -6,7 +6,7 @@ function Watchlist() {
   const [search, setSearch] = useState('');
   const [genreList, setGenresList] = useState(['All Genre', 'Action', 'Suspense','Thriller']);
   const [currentGenre, setCurrentGenre] = useState('All Genre');
-  const {watchlist, setWatchlist} = useContext(WatchListContext);
+  const {watchlist, setWatchlist, removeFromWatchList} = useContext(WatchListContext);
 
   // useEffect(() => {
   //   const watchListFromStorage = JSON.parse(localStorage.getItem("watchlist"));
@@ -61,6 +61,12 @@ function Watchlist() {
               {genreids[movie.genre_ids[0]]}
             </div>
           </div>
+        </td>
+        <td className="px-6 py-2 whitespace-nowrap">
+         
+            <div className="text-sm font-medium text-gray-900 dark:text-white hover:cursor-pointer" onClick={() => removeFromWatchList(movie)}>
+              🗑️
+            </div>
         </td>
       </tr>
     );
@@ -132,6 +138,9 @@ function Watchlist() {
             </th>
             <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
               Genre
+            </th>
+            <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+              Remove
             </th>
           </tr>
         </thead>
