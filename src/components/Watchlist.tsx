@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import genreids, { IMAGE_BASE_URL } from "../constant";
+import { WatchListContext } from "../contexts/WatchListContext";
 
 function Watchlist() {
-  const [watchList, setWatchlist] = useState([]);
   const [search, setSearch] = useState('');
   const [genreList, setGenresList] = useState(['All Genre', 'Action', 'Suspense','Thriller']);
   const [currentGenre, setCurrentGenre] = useState('All Genre');
+  const {watchlist, setWatchlist} = useContext(WatchListContext);
 
-  useEffect(() => {
-    const watchListFromStorage = JSON.parse(localStorage.getItem("watchlist"));
-    setWatchlist(watchListFromStorage);
-  }, []);
+  // useEffect(() => {
+  //   const watchListFromStorage = JSON.parse(localStorage.getItem("watchlist"));
+  //   setWatchlist(watchListFromStorage);
+  // }, []);
 
   useEffect(() => {
     const watchListFromStorage = JSON.parse(localStorage.getItem("watchlist"));
@@ -19,7 +20,7 @@ function Watchlist() {
     })
     temp = new Set(temp);
     setGenresList(['All Genre', ...temp]);
-  })
+  },[])
 
   const onSearchAction = (e) => {
     setSearch(e.target.value);
@@ -66,14 +67,14 @@ function Watchlist() {
   };
 
   const sortAscending = () => {
-    const watchListAsc = watchList.sort(
+    const watchListAsc = watchlist.sort(
       (a, b) => a.vote_average - b.vote_average
     );
     setWatchlist([...watchListAsc]);
   };
 
   const sortDesending = () => {
-    const watchListDesc = watchList.sort(
+    const watchListDesc = watchlist.sort(
       (a, b) => b.vote_average - a.vote_average
     );
     setWatchlist([...watchListDesc]);
@@ -135,7 +136,7 @@ function Watchlist() {
           </tr>
         </thead>
         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-          {watchList
+          {watchlist
             .filter((wl) => {
               if(currentGenre == 'All Genre') {
                 return true;

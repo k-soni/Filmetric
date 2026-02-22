@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Pagination from "./pagination";
 import MovieCard from "./MovieCard";
 import axios from "axios";
 import { BASE_URL, API_KEY } from "../constant";
 import { endPoints } from "../end-points";
+import { WatchListContext } from "../contexts/WatchListContext";
+
 
 function Movies() {
   const [movies, setMovies] = useState([]);
   const [pageNum, setPageNum] = useState(1);
-  const [watchlist, setWatchlist] = useState([]);
+  const {watchlist, setWatchlist, handleWatchListAction, removeFromWatchList} = useContext(WatchListContext);
 
   //get and set movies
   useEffect(() => {
@@ -18,11 +20,6 @@ function Movies() {
           setMovies(res.data.results);
       });
   },[pageNum]);
-
-  useEffect(() => {
-    const watchListFromStorage = JSON.parse(localStorage.getItem("watchlist"));
-    setWatchlist(watchListFromStorage);
-  }, []);
 
   function handleNext() {
     console.log("handleNext setPageNum");
@@ -36,19 +33,6 @@ function Movies() {
       setPageNum(pageNum - 1);
     }
   }
-
-  function handleWatchListAction(movie) {
-    console.log("handleWatchListAction called");
-    const allMovies = [...watchlist, movie];
-    setWatchlist(allMovies);
-    localStorage.setItem('watchlist', JSON.stringify(allMovies));
-  }
-
-  function removeFromWatchList(movie) {
-    const filteredMovies = watchlist.filter(m => m.id !== movie.id);
-    setWatchlist([...filteredMovies]);
-    localStorage.setItem('watchlist', JSON.stringify(filteredMovies));
-  } 
 
   return (
     <div>
